@@ -5,6 +5,7 @@ import '../widgets/custom_header.dart';
 import '../widgets/weight_card.dart';
 import '../widgets/bed_control_card.dart';
 import '../widgets/climate_card.dart';
+import '../widgets/oxygen_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -31,6 +32,8 @@ class HomeScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 12),
                 ClimateCard(),
+                SizedBox(height: 12),
+                OxygenCard(),
                 SizedBox(height: 12),
                 WeightCard(),
                 SizedBox(height: 12),

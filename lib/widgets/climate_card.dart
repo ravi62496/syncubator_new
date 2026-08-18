@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/climate_provider.dart';
-import '../providers/oxygen_provider.dart';
 import '../utils/app_colors.dart';
 
 class ClimateCard extends StatefulWidget {
@@ -17,7 +16,6 @@ class _ClimateCardState extends State<ClimateCard> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<ClimateProvider>().startMonitoring();
-      context.read<OxygenProvider>().startMonitoring();
     });
   }
 
@@ -34,12 +32,11 @@ class _ClimateCardState extends State<ClimateCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<ClimateProvider, OxygenProvider>(
-      builder: (context, climateProvider, oxygenProvider, _) {
+    return Consumer<ClimateProvider>(
+      builder: (context, climateProvider, _) {
         final climate = climateProvider.climate;
-        final oxygen = oxygenProvider.oxygen;
         
-        if (climate == null || oxygen == null) {
+        if (climate == null) {
           return Container(
             height: 150,
             decoration: BoxDecoration(
@@ -109,10 +106,10 @@ class _ClimateCardState extends State<ClimateCard> {
                           color: Colors.blue,
                         ),
                         _Metric(
-                          label: "Oxygen",
-                          value: "Level ${oxygen.level}",
-                          icon: Icons.air_rounded,
-                          color: Colors.green,
+                          label: "Pressure",
+                          value: "${(climate.currentPressure / 100).toStringAsFixed(1)} hPa",
+                          icon: Icons.compress_rounded,
+                          color: Colors.purple,
                         ),
                       ],
                     ),
@@ -143,7 +140,7 @@ class _ClimateCardState extends State<ClimateCard> {
                     ),
                     const Spacer(),
                     Text(
-                      "O2: Lvl ${oxygen.level}${oxygen.moving ? '...' : ''}",
+                      "Target: ${climate.targetTemp}°C / ${climate.targetHumidity}%",
                       style: const TextStyle(fontSize: 12, color: AppColors.textSecondary, fontWeight: FontWeight.w500),
                     ),
                   ],
@@ -167,7 +164,6 @@ class _ClimateAdjustDialog extends StatefulWidget {
 class _ClimateAdjustDialogState extends State<_ClimateAdjustDialog> {
   late double _temp;
   late double _hum;
-  late int _oxygenLevel;
   late bool _enabled;
   late int _heater;
   bool _initialized = false;
@@ -175,17 +171,13 @@ class _ClimateAdjustDialogState extends State<_ClimateAdjustDialog> {
   @override
   Widget build(BuildContext context) {
     final climateProvider = context.watch<ClimateProvider>();
-    final oxygenProvider = context.watch<OxygenProvider>();
-    
     final climate = climateProvider.climate;
-    final oxygen = oxygenProvider.oxygen;
 
-    if (climate == null || oxygen == null) return const SizedBox.shrink();
+    if (climate == null) return const SizedBox.shrink();
 
     if (!_initialized) {
       _temp = climate.targetTemp;
       _hum = climate.targetHumidity;
-      _oxygenLevel = oxygen.level;
       _enabled = climate.controlEnabled;
       _heater = 1; // Default
       _initialized = true;
@@ -243,17 +235,6 @@ class _ClimateAdjustDialogState extends State<_ClimateAdjustDialog> {
             onChanged: (val) => setState(() => _hum = val),
           ),
           const SizedBox(height: 20),
-          _buildAdjuster(
-            label: "Oxygen Valve Level",
-            value: _oxygenLevel.toDouble(),
-            unit: "",
-            min: 0,
-            max: 7,
-            divisions: 7,
-            color: Colors.green,
-            onChanged: (val) => setState(() => _oxygenLevel = val.toInt()),
-          ),
-          const SizedBox(height: 20),
           const Text("Active Heater", style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
           Row(
             children: [
@@ -286,7 +267,6 @@ class _ClimateAdjustDialogState extends State<_ClimateAdjustDialog> {
                   enabled: _enabled,
                   activeHeater: _heater,
                 );
-                oxygenProvider.setLevel(_oxygenLevel);
                 Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(

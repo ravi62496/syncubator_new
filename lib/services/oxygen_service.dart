@@ -11,8 +11,11 @@ class OxygenService {
   Future<OxygenModel> fetchStatus() async {
     if (ApiConstants.useMockData) {
       return OxygenModel(
-        level: 21 + (DateTime.now().second % 3),
+        level: 2,
         moving: false,
+        measuredPercent: 21.0 + (DateTime.now().second % 5),
+        voltage: 1.4,
+        sensorStatus: 'OK',
       );
     }
     final json = await _apiService.getJson(ApiConstants.statusEndpoint);
