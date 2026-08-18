@@ -93,23 +93,29 @@ class _OxygenCardState extends State<OxygenCard> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _Metric(
-                          label: "O2 Conc.",
-                          value: "${oxygen.measuredPercent.toStringAsFixed(1)}%",
-                          icon: Icons.bubble_chart_rounded,
-                          color: Colors.teal,
+                        Expanded(
+                          child: _Metric(
+                            label: "O2 Conc.",
+                            value: "${oxygen.measuredPercent.toStringAsFixed(1)}%",
+                            icon: Icons.bubble_chart_rounded,
+                            color: Colors.teal,
+                          ),
                         ),
-                        _Metric(
-                          label: "Valve Level",
-                          value: "Lvl ${oxygen.level}",
-                          icon: Icons.settings_input_component_rounded,
-                          color: Colors.indigo,
+                        Expanded(
+                          child: _Metric(
+                            label: "Valve Level",
+                            value: "Lvl ${oxygen.level}",
+                            icon: Icons.settings_input_component_rounded,
+                            color: Colors.indigo,
+                          ),
                         ),
-                        _Metric(
-                          label: "Sensor Status",
-                          value: oxygen.sensorStatus,
-                          icon: Icons.check_circle_outline_rounded,
-                          color: oxygen.sensorStatus == 'OK' ? Colors.green : Colors.red,
+                        Expanded(
+                          child: _Metric(
+                            label: "Sensor Status",
+                            value: oxygen.sensorStatus,
+                            icon: Icons.check_circle_outline_rounded,
+                            color: oxygen.sensorStatus == 'OK' ? Colors.green : Colors.red,
+                          ),
                         ),
                       ],
                     ),
@@ -130,12 +136,15 @@ class _OxygenCardState extends State<OxygenCard> {
                       color: oxygen.moving ? Colors.teal : Colors.grey,
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      oxygen.moving ? "Adjusting Valve..." : "Sensor Voltage: ${oxygen.voltage.toStringAsFixed(3)}V",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: oxygen.moving ? Colors.teal : Colors.grey[600],
+                    Expanded(
+                      child: Text(
+                        oxygen.moving ? "Adjusting Valve..." : "Sensor Voltage: ${oxygen.voltage.toStringAsFixed(3)}V",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: oxygen.moving ? Colors.teal : Colors.grey[600],
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -266,13 +275,19 @@ class _Metric extends StatelessWidget {
           child: Icon(icon, color: color, size: 20),
         ),
         const SizedBox(height: 8),
-        Text(
-          value,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            value,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+          ),
         ),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 10, color: AppColors.textSecondary, fontWeight: FontWeight.w500),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            label,
+            style: const TextStyle(fontSize: 10, color: AppColors.textSecondary, fontWeight: FontWeight.w500),
+          ),
         ),
       ],
     );

@@ -117,13 +117,21 @@ class _WeightCardState extends State<WeightCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: weight.cells.asMap().entries.map((entry) {
-                  return Column(
-                    children: [
-                      Text("Cell ${entry.key + 1}", 
-                        style: const TextStyle(fontSize: 10, color: Colors.grey)),
-                      Text("${entry.value.toStringAsFixed(1)}g",
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                    ],
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text("Cell ${entry.key + 1}", 
+                            style: const TextStyle(fontSize: 10, color: Colors.grey)),
+                        ),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text("${entry.value.toStringAsFixed(1)}g",
+                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    ),
                   );
                 }).toList(),
               ),

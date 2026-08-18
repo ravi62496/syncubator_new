@@ -1,8 +1,10 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 /// Central place for all Raspberry Pi / Flask API configuration.
 ///
-/// Update [baseUrl] to match your Raspberry Pi's IP address on the
-/// hospital / lab network. Using a single constant means you only
-/// change this in one place as the Pi's address changes.
+/// This class automatically detects if it is running on the Raspberry Pi
+/// (Linux) or on a mobile device, and adjusts the [baseUrl] accordingly.
 class ApiConstants {
   ApiConstants._();
 
@@ -11,16 +13,21 @@ class ApiConstants {
   /// reachable, and its real routes are confirmed.
   static const bool useMockData = false;
 
-  /// Example: 'https://192.168.0.115'
-  /// No port needed — HTTPS defaults to 443, which is what Nginx
-  /// listens on and proxies through to Gunicorn on the Pi.
-  static const String baseUrl = 'https://192.168.0.116';
+  /// Returns the appropriate base URL for the current platform.
+  /// Uses 'localhost' on Linux (Raspberry Pi) and the fixed IP on mobile.
+  static String get baseUrl {
+    if (!kIsWeb && Platform.isLinux) {
+      return 'https://localhost';
+    }
+    // Update this to match your Raspberry Pi's IP address on your network
+    return 'https://192.168.0.116';
+  }
 
-  static const String statusEndpoint = '$baseUrl/status';
-  static const String weightTareEndpoint = '$baseUrl/weight/tare';
-  static const String climateSettingsEndpoint = '$baseUrl/climate/settings';
-  static const String bedMoveEndpoint = '$baseUrl/bed/move';
-  static const String oxygenLevelEndpoint = '$baseUrl/oxygen/level';
+  static String get statusEndpoint => '$baseUrl/status';
+  static String get weightTareEndpoint => '$baseUrl/weight/tare';
+  static String get climateSettingsEndpoint => '$baseUrl/climate/settings';
+  static String get bedMoveEndpoint => '$baseUrl/bed/move';
+  static String get oxygenLevelEndpoint => '$baseUrl/oxygen/level';
 
   /// How often the app polls for a fresh reading.
   static const Duration pollInterval = Duration(seconds: 1);

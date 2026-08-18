@@ -93,23 +93,29 @@ class _ClimateCardState extends State<ClimateCard> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _Metric(
-                          label: "Temp",
-                          value: "${climate.currentTemp.toStringAsFixed(1)}°C",
-                          icon: Icons.thermostat_rounded,
-                          color: Colors.orange,
+                        Expanded(
+                          child: _Metric(
+                            label: "Temp",
+                            value: "${climate.currentTemp.toStringAsFixed(1)}°C",
+                            icon: Icons.thermostat_rounded,
+                            color: Colors.orange,
+                          ),
                         ),
-                        _Metric(
-                          label: "Humidity",
-                          value: "${climate.currentHumidity.toStringAsFixed(0)}%",
-                          icon: Icons.water_drop_rounded,
-                          color: Colors.blue,
+                        Expanded(
+                          child: _Metric(
+                            label: "Humidity",
+                            value: "${climate.currentHumidity.toStringAsFixed(0)}%",
+                            icon: Icons.water_drop_rounded,
+                            color: Colors.blue,
+                          ),
                         ),
-                        _Metric(
-                          label: "Pressure",
-                          value: "${(climate.currentPressure / 100).toStringAsFixed(1)} hPa",
-                          icon: Icons.compress_rounded,
-                          color: Colors.purple,
+                        Expanded(
+                          child: _Metric(
+                            label: "Pressure",
+                            value: "${(climate.currentPressure / 100).toStringAsFixed(1)} hPa",
+                            icon: Icons.compress_rounded,
+                            color: Colors.purple,
+                          ),
                         ),
                       ],
                     ),
@@ -130,15 +136,18 @@ class _ClimateCardState extends State<ClimateCard> {
                       color: climate.heaterStatus == "ON" ? Colors.orange : Colors.grey,
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      "System is ${climate.controlEnabled ? 'ACTIVE' : 'IDLE'}",
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: climate.controlEnabled ? AppColors.primary : Colors.grey[600],
+                    Expanded(
+                      child: Text(
+                        "System is ${climate.controlEnabled ? 'ACTIVE' : 'IDLE'}",
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: climate.controlEnabled ? AppColors.primary : Colors.grey[600],
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const Spacer(),
+                    const SizedBox(width: 8),
                     Text(
                       "Target: ${climate.targetTemp}°C / ${climate.targetHumidity}%",
                       style: const TextStyle(fontSize: 12, color: AppColors.textSecondary, fontWeight: FontWeight.w500),
@@ -350,13 +359,19 @@ class _Metric extends StatelessWidget {
           child: Icon(icon, color: color, size: 20),
         ),
         const SizedBox(height: 8),
-        Text(
-          value,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            value,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+          ),
         ),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 10, color: AppColors.textSecondary, fontWeight: FontWeight.w500),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            label,
+            style: const TextStyle(fontSize: 10, color: AppColors.textSecondary, fontWeight: FontWeight.w500),
+          ),
         ),
       ],
     );
