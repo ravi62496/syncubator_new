@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../widgets/baby_info_card.dart';
 import '../widgets/custom_header.dart';
 import '../widgets/weight_card.dart';
+import '../widgets/bed_control_card.dart';
+import '../widgets/climate_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -25,10 +27,14 @@ class HomeScreen extends StatelessWidget {
                 BabyInfoCard(
                   babyId: "NICU-001",
                   babyName: "Baby A",
-                  age: "2 Days",
+                  age: "6 Days",
                 ),
                 SizedBox(height: 12),
+                ClimateCard(),
+                SizedBox(height: 12),
                 WeightCard(),
+                SizedBox(height: 12),
+                BedControlCard(),
               ],
             ),
           ),

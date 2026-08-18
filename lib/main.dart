@@ -3,14 +3,24 @@ import 'package:provider/provider.dart';
 
 import 'providers/navigation_provider.dart';
 import 'providers/weight_provider.dart';
-import 'screens/history_screen.dart';
-import 'screens/home_screen.dart';
-import 'screens/raspberry_screen.dart';
-import 'screens/settings_screen.dart';
+import 'providers/bed_provider.dart';
+import 'providers/climate_provider.dart';
+import 'providers/oxygen_provider.dart';
+import 'screens/splash_screen.dart';
 import 'utils/app_colors.dart';
-import 'widgets/bottom_navbar.dart';
+import 'utils/api_constants.dart';
+import 'utils/secure_http_client.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Must be awaited before runApp(): every screen that talks to the Pi
+  // (via SecureHttpClient.instance) assumes the self-signed certificate is
+  // already loaded and the client is ready by the time it renders.
+  // Demo mode must be fully offline. Loading the Pi certificate is only
+  // necessary when the app is configured to contact the real device.
+  if (!ApiConstants.useMockData) {
+    await SecureHttpClient.init();
+  }
   runApp(const SyncubatorApp());
 }
 
@@ -21,13 +31,11 @@ class SyncubatorApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => NavigationProvider(),
-        ),
-
-        ChangeNotifierProvider(
-          create: (_) => WeightProvider(),
-        ),
+        ChangeNotifierProvider(create: (_) => NavigationProvider()),
+        ChangeNotifierProvider(create: (_) => WeightProvider()),
+        ChangeNotifierProvider(create: (_) => BedProvider()),
+        ChangeNotifierProvider(create: (_) => ClimateProvider()),
+        ChangeNotifierProvider(create: (_) => OxygenProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -35,33 +43,10 @@ class SyncubatorApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
           scaffoldBackgroundColor: AppColors.background,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: AppColors.primary,
-          ),
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
         ),
-        home: const MainScreen(),
+        home: const SplashScreen(),
       ),
-    );
-  }
-}
-
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final navigationProvider = Provider.of<NavigationProvider>(context);
-
-    final pages = [
-      const HomeScreen(),
-      const HistoryScreen(),
-      const RaspberryScreen(),
-      const SettingsScreen(),
-    ];
-
-    return Scaffold(
-      body: pages[navigationProvider.currentIndex],
-      bottomNavigationBar: const BottomNavbar(),
     );
   }
 }

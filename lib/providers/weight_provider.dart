@@ -26,7 +26,7 @@ class WeightProvider extends ChangeNotifier {
     if (_pollTimer != null) return;
     _fetchOnce();
     _pollTimer = Timer.periodic(
-      ApiConstants.weightPollInterval,
+      ApiConstants.pollInterval,
           (_) => _fetchOnce(),
     );
   }

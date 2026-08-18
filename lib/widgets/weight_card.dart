@@ -37,7 +37,7 @@ class _WeightCardState extends State<WeightCard> {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 12,
                 offset: const Offset(0, 4),
               ),
@@ -86,27 +86,48 @@ class _WeightCardState extends State<WeightCard> {
 
       case WeightConnectionStatus.connected:
         final weight = provider.currentWeight;
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.baseline,
-          textBaseline: TextBaseline.alphabetic,
+        
+        return Column(
           children: [
-            Text(
-              weight?.value.toStringAsFixed(2) ?? '--',
-              style: const TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primary,
-              ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Text(
+                  weight?.value.toStringAsFixed(3) ?? '--',
+                  style: const TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primary,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  weight?.unit ?? 'kg',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 6),
-            Text(
-              weight?.unit ?? 'kg',
-              style: const TextStyle(
-                fontSize: 18,
-                color: Colors.black54,
-                fontWeight: FontWeight.w500,
+            if (weight != null && weight.cells.isNotEmpty) ...[
+              const Divider(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: weight.cells.asMap().entries.map((entry) {
+                  return Column(
+                    children: [
+                      Text("Cell ${entry.key + 1}", 
+                        style: const TextStyle(fontSize: 10, color: Colors.grey)),
+                      Text("${entry.value.toStringAsFixed(1)}g",
+                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                    ],
+                  );
+                }).toList(),
               ),
-            ),
+            ],
           ],
         );
 

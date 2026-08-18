@@ -1,17 +1,21 @@
-# syncubator
+# Syncubator
 
-A new Flutter project.
+Syncubator is a Flutter-based application for monitoring and controlling neonatal incubators.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1.  **Assets:** Ensure you have the application logo at `assets/images/logo.jpeg`.
+2.  **API Configuration:** Update the Raspberry Pi IP address in `lib/utils/api_constants.dart`.
+3.  **Run the app:**
+    ```bash
+    flutter run
+    ```
 
-A few resources to get you started if this is your first Flutter project:
+## Project Structure
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- `lib/models`: Data models.
+- `lib/services`: API communication.
+- `lib/providers`: State management.
+- `lib/screens`: UI Pages.
+- `lib/widgets`: Reusable UI components.
+- `lib/utils`: Constants and theme settings.

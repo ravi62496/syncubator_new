@@ -6,24 +6,24 @@
 class ApiConstants {
   ApiConstants._();
 
-  /// Example: 'http://192.168.1.50:5000'
-  /// TODO: replace with your Raspberry Pi's actual local IP.
-  static const String baseUrl = 'http://192.168.0.115:5000';
+  /// When true, all services return fake/simulated data instead of
+  /// hitting the network. Flip to false once the Pi is wired up,
+  /// reachable, and its real routes are confirmed.
+  static const bool useMockData = false;
 
-  static const String weightEndpoint = '$baseUrl/weight';
+  /// Example: 'https://192.168.0.115'
+  /// No port needed — HTTPS defaults to 443, which is what Nginx
+  /// listens on and proxies through to Gunicorn on the Pi.
+  static const String baseUrl = 'https://192.168.0.116';
 
-  // Reserved for Phase 3+ (bed control, sensors, device status)
-  static const String bedStatusEndpoint = '$baseUrl/bed/status';
-  static const String bedRaiseEndpoint = '$baseUrl/bed/raise';
-  static const String bedLowerEndpoint = '$baseUrl/bed/lower';
-  static const String bedStopEndpoint = '$baseUrl/bed/stop';
-  static const String sensorsEndpoint = '$baseUrl/sensors';
-  static const String deviceStatusEndpoint = '$baseUrl/device/status';
-  static const String tareEndpoint = '$baseUrl/tare';
-  static const String calibrateEndpoint = '$baseUrl/calibrate';
+  static const String statusEndpoint = '$baseUrl/status';
+  static const String weightTareEndpoint = '$baseUrl/weight/tare';
+  static const String climateSettingsEndpoint = '$baseUrl/climate/settings';
+  static const String bedMoveEndpoint = '$baseUrl/bed/move';
+  static const String oxygenLevelEndpoint = '$baseUrl/oxygen/level';
 
-  /// How often the app polls for a fresh weight reading.
-  static const Duration weightPollInterval = Duration(seconds: 1);
+  /// How often the app polls for a fresh reading.
+  static const Duration pollInterval = Duration(seconds: 1);
 
   /// How long to wait before considering the Pi unreachable.
   static const Duration requestTimeout = Duration(seconds: 3);

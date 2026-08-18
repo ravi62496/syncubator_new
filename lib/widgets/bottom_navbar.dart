@@ -15,7 +15,7 @@ class BottomNavbar extends StatelessWidget {
       selectedIndex: navigationProvider.currentIndex,
       onDestinationSelected: navigationProvider.changePage,
       backgroundColor: AppColors.white,
-      indicatorColor: AppColors.primary.withValues(alpha: 0.15),
+      indicatorColor: AppColors.primary.withOpacity(0.15),
       height: 72,
       destinations: const [
         NavigationDestination(
@@ -24,14 +24,9 @@ class BottomNavbar extends StatelessWidget {
           label: "Home",
         ),
         NavigationDestination(
-          icon: Icon(Icons.history_outlined),
-          selectedIcon: Icon(Icons.history),
-          label: "History",
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.memory_outlined),
-          selectedIcon: Icon(Icons.memory),
-          label: "Raspberry",
+          icon: Icon(Icons.videocam_outlined),
+          selectedIcon: Icon(Icons.videocam),
+          label: "Monitoring",
         ),
         NavigationDestination(
           icon: Icon(Icons.settings_outlined),

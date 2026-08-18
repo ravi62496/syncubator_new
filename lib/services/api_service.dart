@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:syncubator/utils/secure_http_client.dart';
 import '../utils/api_constants.dart';
 
 /// Thrown when the Pi is unreachable (network error, timeout, refused
@@ -27,8 +28,11 @@ class ApiResponseException implements Exception {
 /// (WeightService now, SensorService/BedService/DeviceService later).
 class ApiService {
   final http.Client _client;
+  final bool _ownsClient;
 
-  ApiService({http.Client? client}) : _client = client ?? http.Client();
+  ApiService({http.Client? client})
+      : _client = client ?? SecureHttpClient.instance,
+        _ownsClient = client != null;
 
   Future<Map<String, dynamic>> getJson(String url) async {
     try {
@@ -79,5 +83,7 @@ class ApiService {
     }
   }
 
-  void dispose() => _client.close();
+  void dispose() {
+    if (_ownsClient) _client.close();
+  }
 }
