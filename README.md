@@ -50,6 +50,10 @@ flutter run
 flutter build apk --release
 ```
 
+### 4. Connected Screen & Multi-Device Setup
+To set up a touchscreen/monitor connected directly to the Raspberry Pi while simultaneously running the app on external mobile devices over Wi-Fi, see our detailed guide:
+👉 [NEW_SCREEN_SETUP_GUIDE.md](NEW_SCREEN_SETUP_GUIDE.md)
+
 ---
 
 ## 📁 Project Structure
